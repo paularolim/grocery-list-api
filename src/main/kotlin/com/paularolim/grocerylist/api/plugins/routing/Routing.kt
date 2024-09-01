@@ -1,4 +1,4 @@
-package com.example.plugins
+package com.paularolim.grocerylist.api.plugins.routing
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
