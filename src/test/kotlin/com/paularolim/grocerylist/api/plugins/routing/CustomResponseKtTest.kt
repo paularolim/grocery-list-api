@@ -1,6 +1,5 @@
 package com.paularolim.grocerylist.api.plugins.routing
 
-import com.paularolim.grocerylist.api.features.user.presentation.controllers.UserX
 import com.paularolim.grocerylist.api.utils.Response
 import io.ktor.http.*
 import io.ktor.server.application.*
