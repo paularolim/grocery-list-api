@@ -31,7 +31,7 @@ class UserRegisterController(
             if (error != null) {
                 throw error
             }
-            return Response.Success("Success message")
+            return Response.Success("Success message", HttpStatusCode.Created)
         } catch (exception: MissingParamException) {
             val message = exception.message ?: ""
             return Response.Error(message, HttpStatusCode.BadRequest)
