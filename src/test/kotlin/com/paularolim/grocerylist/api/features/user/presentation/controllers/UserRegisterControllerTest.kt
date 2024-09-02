@@ -38,6 +38,17 @@ class UserRegisterControllerTest {
     }
 
     @Test
+    fun `should return 201 if valid data is provided`() {
+        val (sut) = makeSut()
+        val request = mockRequest()
+
+        val response = runBlocking { sut.handle(request) }
+
+        assertEquals(HttpStatusCode.Created, (response as Response.Success).statusCode)
+        assertEquals("Success message", response.message)
+    }
+
+    @Test
     fun `should call Validation with correct value`() {
         val (sut, validationSpy) = makeSut()
         val requestJson = mockRequest()
