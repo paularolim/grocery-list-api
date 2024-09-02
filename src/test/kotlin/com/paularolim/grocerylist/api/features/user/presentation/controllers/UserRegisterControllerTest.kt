@@ -75,4 +75,17 @@ class UserRegisterControllerTest {
         assertEquals(HttpStatusCode.BadRequest, (response as Response.Error).statusCode)
         assertEquals("Missing param: name", response.error)
     }
+
+    @Test
+    fun `should return 500 if throw error`() {
+        val (sut, validationSpy) = makeSut()
+        val request = mockRequest()
+
+        validationSpy.error = Exception("any_exception")
+
+        val response = runBlocking { sut.handle(request) }
+
+        assertEquals(HttpStatusCode.InternalServerError, (response as Response.Error).statusCode)
+        assertEquals("any_exception", response.error)
+    }
 }
