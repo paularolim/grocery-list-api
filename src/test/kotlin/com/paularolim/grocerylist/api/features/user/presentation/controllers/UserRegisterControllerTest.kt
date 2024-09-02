@@ -11,8 +11,10 @@ import kotlin.test.assertEquals
 
 class UserRegisterControllerTest {
     class ValidationSpy : Validation<Any> {
+        var input: Any? = null
         var error: Exception? = null
         override fun validate(input: Any): Exception? {
+            this.input = input
             return error
         }
     }
@@ -33,6 +35,21 @@ class UserRegisterControllerTest {
         val validationSpy = ValidationSpy()
         val sut = UserRegisterController(validationSpy)
         return SutTypes(sut, validationSpy)
+    }
+
+    @Test
+    fun `should call Validation with correct value`() {
+        val (sut, validationSpy) = makeSut()
+        val requestJson = mockRequest()
+
+        val request = UserRegisterController.UserRegisterControllerRequest(
+            name = requestJson["name"]?.jsonPrimitive?.contentOrNull,
+            email = requestJson["email"]?.jsonPrimitive?.contentOrNull
+        )
+
+        runBlocking { sut.handle(requestJson) }
+
+        assertEquals(validationSpy.input, request)
     }
 
     @Test
