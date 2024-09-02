@@ -6,15 +6,15 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class ValidationSpy : Validation<Map<String, Any?>> {
-    var error: Exception? = null
-    override fun validate(input: Map<String, Any?>): Exception? {
-        return error
-    }
-}
-
 class ValidationCompositeTest {
     private val field = "anyField"
+
+    class ValidationSpy : Validation<Map<String, Any?>> {
+        var error: Exception? = null
+        override fun validate(input: Map<String, Any?>): Exception? {
+            return error
+        }
+    }
 
     data class SutTypes(
         val sut: ValidationComposite<Map<String, Any?>>,
