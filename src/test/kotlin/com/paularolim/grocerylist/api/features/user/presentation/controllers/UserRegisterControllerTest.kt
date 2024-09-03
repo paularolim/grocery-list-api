@@ -2,6 +2,7 @@ package com.paularolim.grocerylist.api.features.user.presentation.controllers
 
 import com.paularolim.grocerylist.api.common.presentation.errors.MissingParamException
 import com.paularolim.grocerylist.api.common.presentation.protocols.Validation
+import com.paularolim.grocerylist.api.features.user.domain.usecases.UserRegisterUsecase
 import com.paularolim.grocerylist.api.utils.Response
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
@@ -19,9 +20,20 @@ class UserRegisterControllerTest {
         }
     }
 
+    class UserRegisterSpy : UserRegisterUsecase {
+        var user: UserRegisterUsecase. RegisterParams? = null
+        val result = true
+        override suspend fun handle(user: UserRegisterUsecase.RegisterParams): Boolean {
+            this.user = user
+            return result
+        }
+
+    }
+
     data class SutTypes(
         val sut: UserRegisterController,
-        val validationSpy: ValidationSpy
+        val validationSpy: ValidationSpy,
+        val userRegisterSpy: UserRegisterSpy
     )
 
     private fun mockRequest(): JsonObject {
@@ -33,8 +45,9 @@ class UserRegisterControllerTest {
 
     private fun makeSut(): SutTypes {
         val validationSpy = ValidationSpy()
-        val sut = UserRegisterController(validationSpy)
-        return SutTypes(sut, validationSpy)
+        val userRegisterSpy = UserRegisterSpy()
+        val sut = UserRegisterController(validationSpy, userRegisterSpy)
+        return SutTypes(sut, validationSpy, userRegisterSpy)
     }
 
     @Test
