@@ -1,6 +1,7 @@
 package com.paularolim.grocerylist.api.features.user.main.factories.validations
 
 import com.paularolim.grocerylist.api.common.presentation.protocols.Validation
+import com.paularolim.grocerylist.api.common.validation.validators.CompareFieldsValidation
 import com.paularolim.grocerylist.api.common.validation.validators.EmailValidation
 import com.paularolim.grocerylist.api.common.validation.validators.RequiredFieldValidation
 import com.paularolim.grocerylist.api.common.validation.validators.ValidationComposite
@@ -8,12 +9,13 @@ import com.paularolim.grocerylist.api.common.validation.validators.ValidationCom
 fun makeUserRegisterValidation(): ValidationComposite<Any> {
     val validations = mutableListOf<Validation<Any>>()
 
-    val requiredFields = listOf("name", "email")
+    val requiredFields = listOf("name", "email", "password", "passwordConfirmation")
     for (field in requiredFields) {
         validations.add(RequiredFieldValidation(field))
     }
 
     validations.add(EmailValidation("email"))
+    validations.add(CompareFieldsValidation("password", "passwordConfirmation"))
 
     return ValidationComposite(validations)
 }

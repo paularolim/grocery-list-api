@@ -8,7 +8,7 @@ import com.paularolim.grocerylist.api.features.user.domain.usecases.UserRegister
 class UserMongodbRepository : UserRegisterRepository {
     override suspend fun register(data: UserRegisterUsecase.RegisterParams): Boolean {
         val collection = MongodbConnection.getCollection<User>("users")
-        val user = User(data.name, data.email)
+        val user = User(data.name, data.email, data.password, data.passwordConfirmation)
         val result = collection.insertOne(user)
         return result.insertedId != null
     }

@@ -20,15 +20,19 @@ class UserRegisterController(
     @Serializable
     data class UserRegisterControllerRequest(
         val name: String?,
-        val email: String?
+        val email: String?,
+        val password: String?,
+        val passwordConfirmation: String?
     )
 
     override suspend fun handle(request: JsonObject): Response {
         try {
             val nameField = request["name"]?.jsonPrimitive?.contentOrNull
             val emailField = request["email"]?.jsonPrimitive?.contentOrNull
+            val passwordField = request["password"]?.jsonPrimitive?.contentOrNull
+            val passwordConfirmationField = request["passwordConfirmation"]?.jsonPrimitive?.contentOrNull
 
-            val body = UserRegisterControllerRequest(nameField, emailField)
+            val body = UserRegisterControllerRequest(nameField, emailField, passwordField, passwordConfirmationField)
 
             val error = validation.validate(body)
             if (error != null) {
@@ -38,7 +42,9 @@ class UserRegisterController(
             val wasInserted = this.userRegister.handle(
                 UserRegisterUsecase.RegisterParams(
                     body.name!!,
-                    body.email!!
+                    body.email!!,
+                    body.password!!,
+                    body.passwordConfirmation!!
                 )
             )
             return if (wasInserted) {
