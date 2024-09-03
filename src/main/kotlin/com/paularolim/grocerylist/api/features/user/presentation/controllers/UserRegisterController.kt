@@ -3,6 +3,7 @@ package com.paularolim.grocerylist.api.features.user.presentation.controllers
 import com.paularolim.grocerylist.api.common.presentation.errors.MissingParamException
 import com.paularolim.grocerylist.api.common.presentation.protocols.Controller
 import com.paularolim.grocerylist.api.common.presentation.protocols.Validation
+import com.paularolim.grocerylist.api.features.user.domain.usecases.UserRegisterUsecase
 import com.paularolim.grocerylist.api.utils.Response
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
@@ -12,7 +13,8 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlin.Exception
 
 class UserRegisterController(
-    private val validation: Validation<Any>
+    private val validation: Validation<Any>,
+    private val userRegister: UserRegisterUsecase
 ) : Controller<JsonObject> {
     @Serializable
     data class UserRegisterControllerRequest (
@@ -31,7 +33,16 @@ class UserRegisterController(
             if (error != null) {
                 throw error
             }
-            return Response.Success("Success message", HttpStatusCode.Created)
+
+            val wasInserted = this.userRegister.handle(UserRegisterUsecase.RegisterParams(
+                body.name!!,
+                body.email!!
+            ))
+            return if (wasInserted) {
+                Response.Success("Success message", HttpStatusCode.Created)
+            } else {
+                Response.Error("Error message")
+            }
         } catch (exception: MissingParamException) {
             val message = exception.message ?: ""
             return Response.Error(message, HttpStatusCode.BadRequest)
