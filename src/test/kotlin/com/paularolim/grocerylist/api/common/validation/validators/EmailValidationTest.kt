@@ -4,6 +4,7 @@ import com.paularolim.grocerylist.api.common.presentation.errors.InvalidParamExc
 import io.mockk.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class EmailValidationTest {
     private val field = "anyField"
@@ -26,6 +27,14 @@ class EmailValidationTest {
         val email = "any_invalid_email"
         val error = sut.validate(FakeInputForInvalidTest(email))
         assertEquals(InvalidParamException(field).message, error?.message)
+    }
+
+    @Test
+    fun `should return an null if a valid email is provided`() {
+        val sut = makeSut()
+        val email = "valid_email@example.com"
+        val result = sut.validate(FakeInputForInvalidTest(email))
+        assertNull(result)
     }
 
     @Test
