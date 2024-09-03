@@ -30,6 +30,14 @@ class EmailValidationTest {
     }
 
     @Test
+    fun `should return an error if EmailValidator returns false - with @`() {
+        val sut = makeSut()
+        val email = "any_invalid_email@"
+        val error = sut.validate(FakeInputForInvalidTest(email))
+        assertEquals(InvalidParamException(field).message, error?.message)
+    }
+
+    @Test
     fun `should return an null if a valid email is provided`() {
         val sut = makeSut()
         val email = "valid_email@example.com"
