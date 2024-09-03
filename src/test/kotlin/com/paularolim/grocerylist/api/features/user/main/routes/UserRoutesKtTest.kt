@@ -12,7 +12,7 @@ class UserRoutesKtTest {
         val requestBody = """
             {
                 "name": "any_name",
-                "email": "any_email"
+                "email": "valid_email@example.com"
             }
         """.trimIndent()
         val responseBody = """{"message":"Success message"}"""
