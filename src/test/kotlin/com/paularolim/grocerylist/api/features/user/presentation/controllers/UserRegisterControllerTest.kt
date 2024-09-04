@@ -40,6 +40,8 @@ class UserRegisterControllerTest {
         return buildJsonObject {
             put("name", "anyName")
             put("email", "anyEmail")
+            put("password", "anyPassword")
+            put("passwordConfirmation", "anyPassword")
         }
     }
 
@@ -68,7 +70,9 @@ class UserRegisterControllerTest {
 
         val request = UserRegisterController.UserRegisterControllerRequest(
             name = requestJson["name"]?.jsonPrimitive?.contentOrNull,
-            email = requestJson["email"]?.jsonPrimitive?.contentOrNull
+            email = requestJson["email"]?.jsonPrimitive?.contentOrNull,
+            password = requestJson["password"]?.jsonPrimitive?.contentOrNull,
+            passwordConfirmation = requestJson["passwordConfirmation"]?.jsonPrimitive?.contentOrNull,
         )
 
         runBlocking { sut.handle(requestJson) }
