@@ -42,8 +42,7 @@ class UserRegisterController(
                 UserRegisterUsecase.RegisterParams(
                     body.name!!,
                     body.email!!,
-                    body.password!!,
-                    body.passwordConfirmation!!
+                    body.password!!
                 )
             )
             return if (wasInserted) {

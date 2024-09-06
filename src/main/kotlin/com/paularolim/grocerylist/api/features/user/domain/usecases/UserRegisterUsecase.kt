@@ -5,7 +5,6 @@ interface UserRegisterUsecase {
         val name: String,
         val email: String,
         val password: String,
-        val passwordConfirmation: String
     )
 
     suspend fun handle(user: RegisterParams) : Boolean
