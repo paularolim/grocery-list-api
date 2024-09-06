@@ -6,11 +6,10 @@ import com.paularolim.grocerylist.api.common.presentation.protocols.Controller
 import com.paularolim.grocerylist.api.common.presentation.protocols.Validation
 import com.paularolim.grocerylist.api.features.user.domain.usecases.UserRegisterUsecase
 import com.paularolim.grocerylist.api.utils.Response
+import com.paularolim.grocerylist.api.utils.jsonToString
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonPrimitive
 import kotlin.Exception
 
 class UserRegisterController(
@@ -27,10 +26,10 @@ class UserRegisterController(
 
     override suspend fun handle(request: JsonObject): Response {
         try {
-            val nameField = request["name"]?.jsonPrimitive?.contentOrNull
-            val emailField = request["email"]?.jsonPrimitive?.contentOrNull
-            val passwordField = request["password"]?.jsonPrimitive?.contentOrNull
-            val passwordConfirmationField = request["passwordConfirmation"]?.jsonPrimitive?.contentOrNull
+            val nameField = jsonToString(request["name"])
+            val emailField = jsonToString(request["email"])
+            val passwordField = jsonToString(request["password"])
+            val passwordConfirmationField = jsonToString(request["passwordConfirmation"])
 
             val body = UserRegisterControllerRequest(nameField, emailField, passwordField, passwordConfirmationField)
 
