@@ -40,6 +40,7 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml")
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.1.2")
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.2")
+    implementation("at.favre.lib:bcrypt:0.10.2")
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
