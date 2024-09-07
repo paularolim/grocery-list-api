@@ -20,4 +20,8 @@ object MongodbConnection {
     inline fun <reified T : Any> getCollection(collection: String): MongoCollection<T> {
         return getMongoDatabase().getCollection<T>(collection)
     }
+
+    fun close() {
+        getMongoClient().close()
+    }
 }
