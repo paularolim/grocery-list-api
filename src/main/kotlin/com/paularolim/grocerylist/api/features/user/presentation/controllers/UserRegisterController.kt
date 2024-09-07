@@ -46,9 +46,9 @@ class UserRegisterController(
                 )
             )
             return if (wasInserted) {
-                Response.Success("Success message", HttpStatusCode.Created)
+                Response.Success("User created", HttpStatusCode.Created)
             } else {
-                Response.Error("Error message")
+                Response.Error("Email already used.", HttpStatusCode.BadRequest)
             }
         } catch (exception: MissingParamException) {
             val message = exception.message ?: ""

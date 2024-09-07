@@ -9,5 +9,5 @@ fun makeUserRegisterUsecase(): UserRegisterUsecase {
     val repository = UserMongodbRepository()
     val salt = 12
     val hasher = BcryptAdapter(salt)
-    return DatabaseUserRegisterUsecase(repository, hasher)
+    return DatabaseUserRegisterUsecase(repository, repository, hasher)
 }
