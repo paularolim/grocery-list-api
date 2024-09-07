@@ -4,6 +4,7 @@ import com.paularolim.grocerylist.api.common.presentation.errors.InvalidParamExc
 import com.paularolim.grocerylist.api.common.presentation.errors.MissingParamException
 import com.paularolim.grocerylist.api.common.presentation.protocols.Controller
 import com.paularolim.grocerylist.api.common.presentation.protocols.Validation
+import com.paularolim.grocerylist.api.features.user.domain.usecases.UserLoginUsecase
 import com.paularolim.grocerylist.api.utils.Response
 import com.paularolim.grocerylist.api.utils.jsonToString
 import io.ktor.http.*
@@ -11,7 +12,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
 class UserLoginController(
-    private val validation: Validation<Any>
+    private val validation: Validation<Any>,
+    private val userLoginUsecase: UserLoginUsecase
 ) : Controller<JsonObject> {
     @Serializable
     data class UserLoginControllerRequest(
@@ -29,6 +31,11 @@ class UserLoginController(
             val error = validation.validate(body)
             if (error != null) {
                 throw error
+            }
+
+            val user = this.userLoginUsecase.handle(UserLoginUsecase.Params(body.email!!, body.password!!))
+            if (user == null) {
+                return Response.Success("Invalid email or password", HttpStatusCode.BadRequest)
             }
 
             return Response.Success("Mocked message", HttpStatusCode.Created)
