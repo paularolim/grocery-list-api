@@ -21,5 +21,6 @@ data class UserResult(
     @BsonId
     val id: ObjectId,
     val name: String,
-    val email: String
+    val email: String,
+    val password: String
 )

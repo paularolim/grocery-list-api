@@ -25,7 +25,7 @@ class UserMongodbRepository : UserRegisterRepository, UserByEmailRepository {
     override suspend fun getByEmail(email: String): UserByEmailRepository.Result? {
         val collection = MongodbConnection.getCollection<User>("users")
         val projectionFields= Projections.fields(
-            Projections.include(User::name.name, User::email.name),
+            Projections.include(User::name.name, User::email.name, User::password.name),
         )
         val resultsFlow = collection.withDocumentClass<UserResult>()
             .find(eq(User::email.name, email))
@@ -38,7 +38,8 @@ class UserMongodbRepository : UserRegisterRepository, UserByEmailRepository {
             UserByEmailRepository.Result(
                 id = resultsFlow.id.toString(),
                 name = resultsFlow.name,
-                email = resultsFlow.email
+                email = resultsFlow.email,
+                password = resultsFlow.password
             )
         }
     }
