@@ -1,5 +1,6 @@
 package com.paularolim.grocerylist.api.features.user.main.routes
 
+import com.paularolim.grocerylist.api.features.user.main.factories.controllers.makeUserLoginController
 import com.paularolim.grocerylist.api.features.user.main.factories.controllers.makeUserRegisterController
 import com.paularolim.grocerylist.api.plugins.routing.customResponse
 import io.ktor.server.application.*
@@ -12,6 +13,11 @@ fun Route.userRoutes() {
         post("/register") {
             val body = call.receive<JsonObject>()
             call.customResponse(makeUserRegisterController().handle(body))
+        }
+
+        post("/login") {
+            val body = call.receive<JsonObject>()
+            call.customResponse(makeUserLoginController().handle(body))
         }
     }
 }
